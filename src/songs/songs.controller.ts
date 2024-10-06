@@ -15,9 +15,9 @@ export class SongsController {
   };
 
   @Get()
-  findAll(){
+  async findAll(){
     try{
-      const songs = this.songsService.findAll();
+      const songs = await this.songsService.findAll();
       return {
         msg:'Find all songs :)',
         songs
@@ -33,6 +33,7 @@ export class SongsController {
     };
   };
 
+
   @Get(':id')
   findOne( 
     @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })) id:number
@@ -40,9 +41,10 @@ export class SongsController {
     return `Searching for the specific Id song: ${id}`;
   };
 
+
   @Post()
-  Create(@Body() createSongDTO:CreateSongDTO){
-    const songs = this.songsService.create(createSongDTO);
+  async Create(@Body() createSongDTO:CreateSongDTO){
+    const songs = await this.songsService.create(createSongDTO);
     return {
       msg:'New song was created',
       songs

@@ -2,12 +2,15 @@ import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/c
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SongsModule } from './songs/songs.module';
-import { AppConfig } from '../config';
+import { AppConfig } from './config';
 import { ConfigModule } from '@nestjs/config';
-import { LoggerMiddleware } from './common/middleware/middlewarelogger.middleware';
+import { LoggerMiddleware } from './common/middleware/loggerMiddleware.middleware';
 import { SongsController } from './songs/songs.controller';
 import { DevConfigService } from './common/providers/DevConfigService';
 import { proAppConfig, devAppConfig } from './common/config/appCofing';
+import dbConfig from 'src/config/dbConfig';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
@@ -17,6 +20,7 @@ import { proAppConfig, devAppConfig } from './common/config/appCofing';
       isGlobal:true,
       load:[AppConfig],
     }),
+    TypeOrmModule.forRoot(dbConfig())
   ],
   controllers: [AppController],
   providers: [
@@ -34,6 +38,9 @@ import { proAppConfig, devAppConfig } from './common/config/appCofing';
 
 
 export class AppModule implements NestModule{
+
+  constructor(private dataSource:DataSource){};
+
   /** WAYS TO USE A MIDDLEWARE - START*/
   configure(consumer: MiddlewareConsumer) {
     /** // OPTION NO 1 TO APPLY A MIDDLEWARE to an entire base path

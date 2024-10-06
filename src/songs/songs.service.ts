@@ -1,5 +1,8 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { CreateSongDTO } from './dto/create-song-dto';
+import { InsertResult, Repository } from 'typeorm';
+import { Song } from 'src/models/songs.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 // ABOUT SCOPES
 /**
@@ -24,19 +27,22 @@ export class SongsService {
 
   // local array
   private readonly songs:CreateSongDTO[] = [];
-  
-  create(song:CreateSongDTO){
-    this.songs.push(song);
-    return this.songs;
-  };
+  constructor(
+    @InjectRepository(Song)
+    private songsRepository: Repository<Song>
+  ){};
 
-
-  findAll(){
+  findAll():Promise<Song[]>{
 
     //Errors come while fetching the data from DB
     // throw new Error('Error in DB while fetching record');
 
-    return this.songs;
+    return this.songsRepository.find();
+  };
+
+  create(song:CreateSongDTO):Promise<InsertResult>{
+    // this.songs.push(song);
+    return this.songsRepository.insert(song);
   };
 
 

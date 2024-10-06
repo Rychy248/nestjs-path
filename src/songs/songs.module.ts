@@ -3,8 +3,10 @@ import { SongsController } from './songs.controller';
 import { SongsService } from './songs.service';
 import mockSonsService from './mock/mock-songs-service';
 import { connection, Connection } from 'src/common/constants/connection';
+import { ModelsModel } from 'src/models/models.module';
 
 @Module({
+  imports: [ ModelsModel ], // importing all models
   controllers: [SongsController],
   providers: [
     /** STANDARD USE OF PROVIDERS */
