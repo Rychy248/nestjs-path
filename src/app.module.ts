@@ -1,16 +1,21 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { SongsModule } from './songs/songs.module';
-import { AppConfig } from './config';
 import { ConfigModule } from '@nestjs/config';
-import { LoggerMiddleware } from './common/middleware/loggerMiddleware.middleware';
-import { SongsController } from './songs/songs.controller';
+
+import { AppConfig } from './config';
+import dbConfig from 'src/config/dbConfig';
 import { DevConfigService } from './common/providers/DevConfigService';
 import { proAppConfig, devAppConfig } from './common/config/appCofing';
-import dbConfig from 'src/config/dbConfig';
+
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
+
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+
+import { SongsModule } from './songs/songs.module';
+import { SongsController } from './songs/songs.controller';
+
+import { LoggerMiddleware } from './common/middleware/loggerMiddleware.middleware';
 
 @Module({
   imports: [
